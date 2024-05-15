@@ -63,7 +63,7 @@ installing arch linux steps
 21) > locale-gen
 22) > vim /etc/hostname // new pc hostname
 	* just write the name you want in the file
-23) > ln -sf /usr/share/zoneinfo/GB/ > /etc/localtime
+23) > ln -sf /usr/share/zoneinfo/Eire > /etc/localtime
 	* probably like that if you can't find it then press tab...
     > hwclock --systohc // sync bios clock
 
@@ -169,3 +169,7 @@ from i3:
 > sudo vim /etc/doas.conf
 	* write in:	
 		permit UNAME as root
+
+// jetbrains font downloads
+> sudo pacman -S ttf-jetbrains // this will return you 2 jetbrains fonts
+	> sudo pacman -S ttf-jetbrains-mono ttf-jetbrains-mono-nerd
