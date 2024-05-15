@@ -1,0 +1,171 @@
+installing arch linux steps
+'>' is an identifier to run a command.
+
+1) > ping google.org // to check for internet
+	* if you're receiving back packets then you're good to continue
+2) > timedatectl set-ntp true
+3) > lsblk  // show all disks
+4) > cfdisk /dev/your_disk
+	* choose gpt
+	* new 128mb-1gb partition for boot     // boot partition
+	* new 4-8gb partition for swap 	       // swap partition
+	* new 20-40gb partition for root dir   // root partition
+	* new partition with rest of space     // home partition
+	* select write at the bottom
+   	** // run lsblk again to confirm everything was written correctly.
+
+// Formatting all of the partitions
+5) > mkfs.fat -F 32 /dev/sda1  // boot 
+   > mkfs.ext4 (/dev/sda3)     // root
+   > mkfs.ext4 /dev/sda4       // home partition
+
+// Creating directories on which partitions will be mounted
+6) > mount /dev/sda3 /mnt   // required mount
+   > mkdir -p /mnt/boot/efi
+   > mkdir /mnt/home
+
+// Mounting
+7) > mount /dev/sda4 /mnt/home // home partition
+8) > mount /dev/sda1 /mnt/boot/efi
+
+// Swap Memory
+9) > mkswap /dev/sda2   // swap
+   > swapon /dev/sda2   // swap
+11) > lsblk // to check everything is mounted and swap memory works
+
+// installing the kernel
+12) > pacstrap -K /mnt base base-devel linux linux-firmware vim
+13) > genfstab -U /mnt >> /mnt/etc/fstab
+	> cat /mnt/etc/fstab // check if everything is fine and up to standard
+14) > arch-chroot /mnt // your colors should change because now you're in the install
+
+15) > pacman -S networkmanager grub // downloads ntwrkmngr and grub
+16) > systemctl enable NetworkManager
+
+// configuring grub
+17) > grub-install /dev/sda --force
+18) > grub-mkconfig -o /boot/grub/grub.cfg
+	* if doesn't say:
+		"Found linux image" and
+		"Found initrd image"
+	then you probably forgot to pacstrap your kernel.
+
+19) > passwd // set your new root password
+	* type in your password
+
+// generate locales + keymaps
+20) > vim /etc/locale.gen
+	choose your language in my case en_US:
+		* uncomment en_US.UTF-8 and en_US ISO-8859
+    > vim /etc/vconsole.conf
+		*write in your keymap for eg: KEYMAP=us
+		
+21) > locale-gen
+22) > vim /etc/hostname // new pc hostname
+	* just write the name you want in the file
+23) > ln -sf /usr/share/zoneinfo/GB/ > /etc/localtime
+	* probably like that if you can't find it then press tab...
+    > hwclock --systohc // sync bios clock
+
+24) > exit // exits out of the chroot
+25) > umount -R /mnt
+26) > reboot
+
+// once rebooted, arch linux will ask you to login
+27) > uname: root; passwd: password you set
+
+// setting up user accounts:
+28) > pacman -S sudo
+29) > useradd -m -G wheel -s /bin/bash Corger
+30) > passwd Corger
+	* set your password
+// AS ROOT
+31) > EDITOR=vim visudo // edit sudoers file
+	* Uncomment the line that says "%wheel ALL=(ALL) ALL"
+
+// recommended optional: perform su and test sudo command
+32) > su Corger
+33) > sudo pacman -Syu  // confirm you are allowed to use sudo
+
+
+// amd gpu drivers download
+34) > sudo pacman -S libva-mesa-driver mesa xf86-video-amdgpu vulkan-radeon
+
+// i3 window manager download
+35) sudo pacman -S xterm i3-wm dmenu i3status xorg-xinit xorg
+36) vim ~/.xinitrc
+	* write in "exec i3"
+37) startx // starts the manager
+37) vim ~/.config/i3/config
+	* configure your settings, keybinds, and terminal etc.
+	* set xterm -fa 'Monospace' -fs 14 -bg black -fg grey
+38) vim ~/.config/i3status/config
+	* configure your status bar
+
+// KDE GRAPHICAL ENVIRONMENT DOWNLOAD
+35) sudo pacman -S plasma sddm konsole dolphin
+	* press enter for every option
+36) sudo systemctl enable --now sddm
+
+
+// GNOME GRAPHICAL ENVIRONMENT DOWNLOAD
+35) sudo pacman -S xorg xorg-server
+36) sudo pacman -S gnome gnome-terminal dolphin htop // terminal download so you don't have to enter tty lol
+37) sudo systemctl enable gdm.service
+38) sudo systemctl start gdm.service --now
+39) sudo shutdown -r now // just to confirm everything works
+
+
+// MOST IMPORTANT PART OBVIOUSLY
+40) sudo pacman -S neofetch
+41) neofetch
+
+STEP 42: PROFIT ON r/unixporn
+
+//
+// WIFI MANAGEMENT
+//
+
+// wifi-menu // post install because you need an internet connection to install...
+> sudo pacman -S netctl dialog
+> sudo wifi-menu
+	* choose your wifi device
+	* type in the password...
+
+// iwctl (pre-install)
+> iwctl
+> device list // will prolly get like wlan0
+> station wlan0 scan
+> station wlan0 get-networks
+> station wlan0 connect YOURSSID
+	* password will be requested.
+> exit // to get out of the tool
+
+// nmcli (post-install wifi)
+> nmcli dev status
+> nmcli radio wifi on
+> nmcli dev wifi list
+> sudo nmcli dev wifi connect "network-ssid" password "network-password"
+
+// post install advanced: yay install
+> sudo (or doas) pacman -S --needed base-devel git
+> git clone https://aur.archlinux.org/yay.git
+> cd yay
+> makepkg -si // -s -> installs dependencies; -i -> installs the pkg 
+
+
+// HOW CAN I ENTER BACK INTO TTY???
+from gnome:
+	KEYBIND: Ctrl+Alt+F4
+from i3:
+	KEYBIND: $mod+shift+e
+	
+	
+// recommended progams to get:
+> doas pacman -S 
+
+// set up doas (sudo alternative)
+> sudo pacman -S doas
+> sudo vim /etc/doas.conf
+	* write in:	
+		permit UNAME as root
