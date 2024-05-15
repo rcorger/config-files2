@@ -1,0 +1,37 @@
+general {
+    colors     = true
+    interval   = 1
+	markup     = "pango"
+        
+    # these two are for the vpn :)
+    color_good = '#00a3a8'
+    color_bad  = '#00a3a8'
+}
+
+order += "ethernet enp8s0"
+order += "path_exists VPN"
+order += "disk /home"
+order += "memory"
+order += "tztime local"
+
+ethernet enp8s0 {
+	format_up = "<span color='#842dfc'>eth status: :) - %ip</span>"
+	format_down = "<span color='#ff12d7'>eth status: :(</span>"
+}
+
+disk "/home" {
+	format = "<span color='#f51f02'>porn folder free: %free</span>"
+}
+
+tztime local {
+	format = "<span color='#f5ab0c'>%d/%m/%Y</span> | <span color='#02f52f'>%H:%M:%S</span>"
+}
+
+memory {
+	format = "<span color='#2052f5'>mem: %used</span>"
+}
+
+path_exists VPN {
+    format = "vpn: %status"
+    path = "/proc/sys/net/ipv4/conf/tun0"
+}
