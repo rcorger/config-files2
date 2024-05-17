@@ -39,7 +39,7 @@ installing arch linux steps
 	> cat /mnt/etc/fstab // check if everything is fine and up to standard
 14) > arch-chroot /mnt // your colors should change because now you're in the install
 
-15) > pacman -S networkmanager grub // downloads ntwrkmngr and grub
+15) > pacman -S networkmanager grub efibootmgr // downloads ntwrkmngr and grub
 16) > systemctl enable NetworkManager
 
 // configuring grub
@@ -92,7 +92,7 @@ installing arch linux steps
 34) > sudo pacman -S libva-mesa-driver mesa xf86-video-amdgpu vulkan-radeon
 
 // i3 window manager download
-35) sudo pacman -S xterm i3-wm dmenu i3status xorg-xinit xorg
+35) sudo pacman -S gnome-terminal i3-wm dmenu i3status xorg-xinit xorg
 36) vim ~/.xinitrc
 	* write in "exec i3"
 37) startx // starts the manager
@@ -101,6 +101,8 @@ installing arch linux steps
 	* set xterm -fa 'Monospace' -fs 14 -bg black -fg grey
 38) vim ~/.config/i3status/config
 	* configure your status bar
+
+(for good i3 config file do > git clone https://github.com/rcorger/config-files2
 
 // KDE GRAPHICAL ENVIRONMENT DOWNLOAD
 35) sudo pacman -S plasma sddm konsole dolphin
@@ -173,3 +175,6 @@ from i3:
 // jetbrains font downloads
 > sudo pacman -S ttf-jetbrains // this will return you 2 jetbrains fonts
 	> sudo pacman -S ttf-jetbrains-mono ttf-jetbrains-mono-nerd
+
+//file manager
+> sudo pacman -S nemo
