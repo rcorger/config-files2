@@ -5,6 +5,9 @@ installing arch linux steps
 	* if you're receiving back packets then you're good to continue
 2) > timedatectl set-ntp true
 3) > lsblk  // show all disks
+	// or alternatively find out which disk u want to install on
+   > lsblk -o NAME,MODEL,SIZE -d
+
 4) > cfdisk /dev/your_disk
 	* choose gpt
 	* new 128mb-1gb partition for boot     // boot partition
