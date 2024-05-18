@@ -178,3 +178,7 @@ from i3:
 
 //file manager
 > sudo pacman -S nemo
+
+// one thing you may realise is that you are unable to install steam.
+> sudo vim /etc/pacman.conf
+	* uncomment [multilib] in /etc/
