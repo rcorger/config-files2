@@ -108,10 +108,12 @@ installing arch linux steps
 (for good i3 config file do > git clone https://github.com/rcorger/config-files2
 
 // KDE GRAPHICAL ENVIRONMENT DOWNLOAD
-35) sudo pacman -S plasma gdm konsole dolphin
+35) sudo pacman -S plasma ly konsole dolphin
 	* press enter for every option
-36) sudo systemctl enable --now gdm
+36) sudo systemctl enable --now ly
 
+
+// ly is so much fuckin cooler omg im bouttacum
 
 // GNOME GRAPHICAL ENVIRONMENT DOWNLOAD
 35) sudo pacman -S xorg xorg-server
