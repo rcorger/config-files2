@@ -66,7 +66,7 @@ installing arch linux steps
 21) > locale-gen
 22) > vim /etc/hostname // new pc hostname
 	* just write the name you want in the file
-23) > ln -sf /usr/share/zoneinfo/Eire > /etc/localtime
+23) > ln -sf /usr/share/zoneinfo/Eire /etc/localtime
 	* probably like that if you can't find it then press tab...
     > hwclock --systohc // sync bios clock
 
